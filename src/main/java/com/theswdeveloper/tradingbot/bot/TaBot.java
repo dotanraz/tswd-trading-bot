@@ -1,14 +1,9 @@
 package com.theswdeveloper.tradingbot.bot;
 
 import com.theswdeveloper.tradingbot.Utils.TradeUtils;
-import com.theswdeveloper.tradingbot.binance.ITradingPlatformApi;
-import com.theswdeveloper.tradingbot.indicators.MovingAverage;
-import com.theswdeveloper.tradingbot.indicators.RSI;
-import com.theswdeveloper.tradingbot.indicators.Strategies;
-import com.theswdeveloper.tradingbot.indicators.StrategyType;
+import com.theswdeveloper.tradingbot.indicators.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -32,6 +27,7 @@ public class TaBot {
     private AtomicInteger currentIndex = new AtomicInteger(0);
     MovingAverage MovingAverage = new MovingAverage();
     RSI RSI = new RSI();
+    MACD macd = new MACD();
     Trade trade = null;
     Strategies strategies = new Strategies();
     TrendService trendService = new TrendService();
@@ -55,9 +51,12 @@ public class TaBot {
         taData.setEma12(MovingAverage.calcEMA(taDataList, currentIndex.get(), 12));
         taData.setEma26(MovingAverage.calcEMA(taDataList, currentIndex.get(), 26));
         taData.setRSI14(RSI.calcRSI(taDataList, currentIndex.get(), 14));
+        taData.setMACD(macd.calcMACD(taDataList, currentIndex.get()));
         taData.setTrend(trendService.getCurrentTrend(taDataList));
         taData.setSmaCrossed(strategies.smaTrendCross(taDataList));
         taDataList.set(currentIndex.get(), taData);
+
+        logger.info(taData.toString());
 
         Signal smaCrossSignal = strategies.runStrategy(StrategyType.SHORT_LONG_SMA_CROSS, taDataList);
         if (trade == null || (trade != null && !trade.isTradeOpen())) {
@@ -98,5 +97,6 @@ public class TaBot {
         currentIndex.getAndIncrement(); //keep this always at the end
         Thread.sleep(plan.getInterval());
     }
+
 
 }

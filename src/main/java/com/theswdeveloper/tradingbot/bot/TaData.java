@@ -10,6 +10,7 @@ public class TaData {
     private double ema12;
     private double ema26;
     private double RSI14;
+    private double MACD;
     private Trend trend = Trend.NATURAL;
     private Trend smaCrossed = Trend.NATURAL;
 
@@ -99,5 +100,29 @@ public class TaData {
 
     public void setRSI14(double RSI14) {
         this.RSI14 = RSI14;
+    }
+
+    public double getMACD() {
+        return MACD;
+    }
+
+    public void setMACD(double MACD) {
+        this.MACD = MACD;
+    }
+
+    @Override
+    public String toString() {
+        return "TaData{" +
+                ", price=" + price +
+                ", fastSma=" + fastSma +
+                ", shortSMA=" + shortSMA +
+                ", longSMA=" + longSMA +
+                ", ema12=" + ema12 +
+                ", ema26=" + ema26 +
+                ", RSI14=" + RSI14 +
+                ", MACD=" + MACD +
+                ", trend=" + trend +
+                ", smaCrossed=" + smaCrossed +
+                '}';
     }
 }

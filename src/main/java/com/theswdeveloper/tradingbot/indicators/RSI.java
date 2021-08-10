@@ -57,7 +57,7 @@ public class RSI {
         double RS = averageUp/averageDown;
         double RSI = NumberUtils.round2DecimalDigits(100 - (100 / ( 1 + RS)));
 
-        logger.info("Price: {}, RSI{}: {}", taDataList.get(index).getPrice(), N, RSI);
+//        logger.info("Price: {}, RSI{}: {}", taDataList.get(index).getPrice(), N, RSI);
         return RSI;
     }
 

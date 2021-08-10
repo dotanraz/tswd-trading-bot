@@ -7,12 +7,7 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 
 /**
- * Moving Average algorithms.
- * It is a linear moving average, meaning -
- * each index in the period (N) of the calculation gets the same weight.
- * The SMA indicator is calculated for a range of prices, however the SMA itself is calculated on a particular index.
- * Example for SMA calculation: N = 3, price-index = 47.
- * the algorithm will use price-indexes 47,46,45 for the calculation, hence SMA = (value(47) + value(46) + value(45))/3
+ * Moving Average algorithms
  */
 public class MovingAverage {
     private static final Logger logger = LoggerFactory.getLogger(MovingAverage.class);
@@ -54,11 +49,14 @@ public class MovingAverage {
             total++;
         }
         double sma = NumberUtils.round2DecimalDigits(sum/total);
-        logger.info("Price: {}, SMA{}: {}", taDataList.get(index).getPrice(), N, sma);
+//        logger.info("Price: {}, SMA{}: {}", taDataList.get(index).getPrice(), N, sma);
         return sma;
     }
 
     /**
+     * EMA - Exponential Moving Average
+     * Average calculation considered the whole period, but assign more weight on the current price
+     *
      * EMA = currentPrice*k + previousEmaPrice*(1-k).
      * k=2/(N+1)
      * @param taDataList
@@ -80,7 +78,7 @@ public class MovingAverage {
         double prevEma = calcSMA(taDataList, index-1, N);
         double currentPrice = taDataList.get(index).getPrice();
         double ema = NumberUtils.round2DecimalDigits(currentPrice*k + prevEma*(1-k));
-        logger.info("Price: {}, EMA{}: {}", taDataList.get(index).getPrice(), N, ema);
+//        logger.info("Price: {}, EMA{}: {}", taDataList.get(index).getPrice(), N, ema);
         return ema;
     }
 
