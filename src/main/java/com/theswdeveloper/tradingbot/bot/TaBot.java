@@ -1,9 +1,6 @@
 package com.theswdeveloper.tradingbot.bot;
 
 import com.theswdeveloper.tradingbot.Utils.TradeUtils;
-import com.theswdeveloper.tradingbot.binance.BinanceApi;
-import com.theswdeveloper.tradingbot.binance.BinanceClient;
-import com.theswdeveloper.tradingbot.binance.PriceMocKApi;
 import com.theswdeveloper.tradingbot.binance.ITradingPlatformApi;
 import com.theswdeveloper.tradingbot.indicators.MovingAverage;
 import com.theswdeveloper.tradingbot.indicators.RSI;
@@ -11,6 +8,7 @@ import com.theswdeveloper.tradingbot.indicators.Strategies;
 import com.theswdeveloper.tradingbot.indicators.StrategyType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -29,39 +27,24 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class TaBot {
 
     private static final Logger logger = LoggerFactory.getLogger(TaBot.class);
-    private String symbol;
+    TaBotPlan plan;
     private List<TaData> taDataList = new LinkedList<>();
     private AtomicInteger currentIndex = new AtomicInteger(0);
-    long INTERVAL = 60000;
     MovingAverage MovingAverage = new MovingAverage();
     RSI RSI = new RSI();
     Trade trade = null;
-    private double stopLimitPct = 0.1;
-    private double stopLossPct = 0.1;
     Strategies strategies = new Strategies();
     TrendService trendService = new TrendService();
-    ITradingPlatformApi tradingPlatformApi;
-    String env = "test";
 
-    public TaBot(String symbol) {
-        this.symbol = symbol;
-        if (this.env.equals("prod")) {
-            tradingPlatformApi = new BinanceApi(BinanceClient.getInstance().getClient());;
-        }
-        else if (this.env.equals("test")) {
-            tradingPlatformApi = new PriceMocKApi();
-            this.INTERVAL = 10;
-        }
-        logger.info("initiating TaBot with symbol: {}, interval: {}", this.symbol, this.INTERVAL);
+
+    public TaBot(TaBotPlan taBotPlan) {
+        this.plan = taBotPlan;
+        logger.info("initiating TaBot with plan: {}", plan.toString());
     }
 
     public void run() throws InterruptedException {
         TaData taData = new TaData();
-
-        String currencyLastPrice = tradingPlatformApi.getCurrencyLastPrice(symbol);
-        if (this.env.equals("test") && currencyLastPrice == null) {
-            System.exit(0);
-        }
+        String currencyLastPrice = plan.getTradingPlatformApi().getCurrencyLastPrice(plan.getSymbol());
 
         taData.setPrice((Double.parseDouble(currencyLastPrice)));
         taData.setTime(System.currentTimeMillis());
@@ -83,9 +66,9 @@ public class TaBot {
                 double currentPrice = taDataList.get(currentIndex.get()).getPrice();
                 trade = new Trade(
                         TradeType.LONG,
-                        TradeUtils.calcStopLimit(currentPrice, TradeType.LONG, stopLimitPct),
-                        TradeUtils.calcStopLoss(currentPrice, TradeType.LONG, stopLossPct),
-                        tradingPlatformApi);
+                        TradeUtils.calcStopLimit(currentPrice, TradeType.LONG, plan.getStopLimitPct()),
+                        TradeUtils.calcStopLoss(currentPrice, TradeType.LONG, plan.getStopLossPct()),
+                        plan.getTradingPlatformApi());
                 trade.open(currentPrice);
             }
 
@@ -93,9 +76,9 @@ public class TaBot {
                 double currentPrice = taDataList.get(currentIndex.get()).getPrice();
                 trade = new Trade(
                         TradeType.SHORT,
-                        TradeUtils.calcStopLimit(currentPrice, TradeType.SHORT, stopLimitPct),
-                        TradeUtils.calcStopLoss(currentPrice, TradeType.SHORT, stopLossPct),
-                        tradingPlatformApi);
+                        TradeUtils.calcStopLimit(currentPrice, TradeType.SHORT, plan.getStopLimitPct()),
+                        TradeUtils.calcStopLoss(currentPrice, TradeType.SHORT, plan.getStopLossPct()),
+                        plan.getTradingPlatformApi());
                 trade.open(currentPrice);
             }
 
@@ -113,7 +96,7 @@ public class TaBot {
                 taDataList.get(currentIndex.get()).getTrend());
 
         currentIndex.getAndIncrement(); //keep this always at the end
-        Thread.sleep(INTERVAL);
+        Thread.sleep(plan.getInterval());
     }
 
 }

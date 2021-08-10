@@ -64,4 +64,9 @@ public class BinanceApi implements ITradingPlatformApi{
     public BinanceApiRestClient getClient() {
         return client;
     }
+
+    @Override
+    public boolean isMock() {
+        return false;
+    }
 }

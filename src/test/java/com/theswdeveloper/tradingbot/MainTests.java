@@ -1,25 +1,18 @@
 package com.theswdeveloper.tradingbot;
 
+import com.theswdeveloper.tradingbot.binance.PriceMockApi;
+import com.theswdeveloper.tradingbot.bot.TaBotPlan;
 import com.theswdeveloper.tradingbot.bot.TaBotRunner;
-import com.theswdeveloper.tradingbot.environment.Env;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.env.Environment;
 
-@SpringBootTest
+//@SpringBootTest
 class MainTests {
 
-	@Autowired
-	Environment environment;
-
 	@Test
-	void contextLoads() throws InterruptedException {
-		Env.getInstance();
-		Env.getInstance().setEnvironment(environment.getActiveProfiles()[0]);
+	void runTaBot() throws InterruptedException {
+		TaBotPlan plan = new TaBotPlan("ETHUSDT", new PriceMockApi(), 10, 0.1, 0.1);
 		TaBotRunner taBotRunner = new TaBotRunner();
-		taBotRunner.run();
-		System.out.println("teteteetete");
+		taBotRunner.run(plan);
 	}
 
 }

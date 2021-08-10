@@ -15,4 +15,5 @@ public interface ITradingPlatformApi {
     public Long placeLimitSell(String symbol, String quantity, String price);
     public List<Order> getAllOrders(String symbol);
     public BinanceApiRestClient getClient();
+    public boolean isMock();
 }

@@ -12,14 +12,14 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.List;
 
-public class PriceMocKApi implements ITradingPlatformApi{
+public class PriceMockApi implements ITradingPlatformApi{
 
-    private static final Logger logger = LoggerFactory.getLogger(PriceMocKApi.class);
+    private static final Logger logger = LoggerFactory.getLogger(PriceMockApi.class);
     String testData = "src/main/resources/static/testData_8hours.csv";
     CSV csv = null;
     Deque<String> priceDeque = new ArrayDeque<>();
 
-    public PriceMocKApi() {
+    public PriceMockApi() {
         loadTestData();
     }
 
@@ -40,6 +40,7 @@ public class PriceMocKApi implements ITradingPlatformApi{
             return price;
         } else {
             logger.error("price mock data = null");
+            System.exit(0);
             return null;
         }
     }
@@ -79,4 +80,8 @@ public class PriceMocKApi implements ITradingPlatformApi{
         return null;
     }
 
+    @Override
+    public boolean isMock() {
+        return true;
+    }
 }
