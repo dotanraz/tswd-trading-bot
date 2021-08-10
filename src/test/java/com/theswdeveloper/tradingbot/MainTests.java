@@ -5,7 +5,6 @@ import com.theswdeveloper.tradingbot.bot.TaBotPlan;
 import com.theswdeveloper.tradingbot.bot.TaBotRunner;
 import org.junit.jupiter.api.Test;
 
-//@SpringBootTest
 class MainTests {
 
 	@Test
