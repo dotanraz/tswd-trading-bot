@@ -9,7 +9,7 @@ class MainTests {
 
 	@Test
 	void runTaBot() throws InterruptedException {
-		TaBotPlan plan = new TaBotPlan("ETHUSDT", new PriceMockApi(), 10, 0.1, 0.1);
+		TaBotPlan plan = new TaBotPlan("ETHUSDT", new PriceMockApi(), 10, 0.1, 0.1, TaBotPlan.Mode.TEST_DATA);
 		TaBotRunner taBotRunner = new TaBotRunner();
 		taBotRunner.run(plan);
 	}

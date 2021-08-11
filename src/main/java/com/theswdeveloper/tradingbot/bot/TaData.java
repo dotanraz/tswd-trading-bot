@@ -7,8 +7,6 @@ public class TaData {
     private double fastSma;
     private double shortSMA;
     private double longSMA;
-    private double ema12;
-    private double ema26;
     private double RSI14;
     private double MACD;
     private Trend trend = Trend.NATURAL;
@@ -78,22 +76,6 @@ public class TaData {
         this.smaCrossed = smaCrossed;
     }
 
-    public double getEma12() {
-        return ema12;
-    }
-
-    public void setEma12(double ema12) {
-        this.ema12 = ema12;
-    }
-
-    public double getEma26() {
-        return ema26;
-    }
-
-    public void setEma26(double ema26) {
-        this.ema26 = ema26;
-    }
-
     public double getRSI14() {
         return RSI14;
     }
@@ -117,8 +99,6 @@ public class TaData {
                 ", fastSma=" + fastSma +
                 ", shortSMA=" + shortSMA +
                 ", longSMA=" + longSMA +
-                ", ema12=" + ema12 +
-                ", ema26=" + ema26 +
                 ", RSI14=" + RSI14 +
                 ", MACD=" + MACD +
                 ", trend=" + trend +

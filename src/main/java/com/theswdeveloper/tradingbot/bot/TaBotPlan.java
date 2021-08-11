@@ -5,17 +5,19 @@ import com.theswdeveloper.tradingbot.binance.ITradingPlatformApi;
 public class TaBotPlan {
 
     private String symbol;
-    long interval;
+    private long interval;
     private double stopLimitPct;
     private double stopLossPct;
-    ITradingPlatformApi tradingPlatformApi;
+    private ITradingPlatformApi tradingPlatformApi;
+    private Mode mode;
 
-    public TaBotPlan(String symbol, ITradingPlatformApi tradingPlatformApi,long interval, double stopLimitPct, double stopLossPct) {
+    public TaBotPlan(String symbol, ITradingPlatformApi tradingPlatformApi, long interval, double stopLimitPct, double stopLossPct, Mode mode) {
         this.symbol = symbol;
         this.interval = interval;
         this.stopLimitPct = stopLimitPct;
         this.stopLossPct = stopLossPct;
         this.tradingPlatformApi = tradingPlatformApi;
+        this.mode = mode;
     }
 
     public String getSymbol() {
@@ -58,6 +60,14 @@ public class TaBotPlan {
         this.tradingPlatformApi = tradingPlatformApi;
     }
 
+    public Mode getMode() {
+        return mode;
+    }
+
+    public void setMode(Mode mode) {
+        this.mode = mode;
+    }
+
     @Override
     public String toString() {
         return "TaBotPlan{" +
@@ -69,4 +79,10 @@ public class TaBotPlan {
                 '}';
     }
 
+    public enum Mode {
+        SIMULATION,
+        COLLECTOR,
+        REAL,
+        TEST_DATA
+    }
 }

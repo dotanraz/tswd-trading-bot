@@ -4,11 +4,21 @@ import com.theswdeveloper.tradingbot.Utils.NumberUtils;
 import com.theswdeveloper.tradingbot.bot.TaData;
 import java.util.List;
 
-public class MACD {
+public class MACD extends Indicator {
 
-    public double calcMACD(List<TaData> taDataList, int index) {
-        return NumberUtils.round2DecimalDigits(
-                taDataList.get(index).getEma12() - taDataList.get(index).getEma26());
+    public double calc(List<TaData> taDataList, int index, int shortPeriod, int longPeriod) {
+        return NumberUtils.round2DecimalDigits(calcEMA(taDataList, index, shortPeriod) - calcEMA(taDataList, index, longPeriod));
+    }
+
+
+    @Deprecated
+    @Override
+    public double calc(List<TaData> taDataList, int index, int period) {
+        return 0;
+    }
+
+    public double calc12_26(List<TaData> taDataList, int index) {
+        return calc(taDataList, index, 12, 26);
     }
 
 }

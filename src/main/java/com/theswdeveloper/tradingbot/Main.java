@@ -17,7 +17,7 @@ public class Main implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		TaBotPlan plan = new TaBotPlan("ETHUSDT", new BinanceApi(BinanceClient.getInstance().getClient()), 60000, 0.1, 0.1);
+		TaBotPlan plan = new TaBotPlan("ETHUSDT", new BinanceApi(BinanceClient.getInstance().getClient()), 60000, 0.1, 0.1, TaBotPlan.Mode.REAL);
 
 		TaBotRunner taBotRunner = new TaBotRunner();
 		taBotRunner.run(plan);

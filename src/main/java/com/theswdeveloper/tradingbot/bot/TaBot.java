@@ -1,7 +1,9 @@
 package com.theswdeveloper.tradingbot.bot;
 
 import com.theswdeveloper.tradingbot.Utils.TradeUtils;
-import com.theswdeveloper.tradingbot.indicators.*;
+import com.theswdeveloper.tradingbot.indicators.IndicatorService;
+import com.theswdeveloper.tradingbot.indicators.Strategies;
+import com.theswdeveloper.tradingbot.indicators.StrategyType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.LinkedList;
@@ -25,13 +27,10 @@ public class TaBot {
     TaBotPlan plan;
     private List<TaData> taDataList = new LinkedList<>();
     private AtomicInteger currentIndex = new AtomicInteger(0);
-    MovingAverage MovingAverage = new MovingAverage();
-    RSI RSI = new RSI();
-    MACD macd = new MACD();
     Trade trade = null;
     Strategies strategies = new Strategies();
     TrendService trendService = new TrendService();
-
+    IndicatorService indicatorService = new IndicatorService();
 
     public TaBot(TaBotPlan taBotPlan) {
         this.plan = taBotPlan;
@@ -45,13 +44,13 @@ public class TaBot {
         taData.setPrice((Double.parseDouble(currencyLastPrice)));
         taData.setTime(System.currentTimeMillis());
         taDataList.add(taData);
-        taData.setFastSma(MovingAverage.calcSMA(taDataList, currentIndex.get(), 4));
-        taData.setShortSMA(MovingAverage.calcSMA(taDataList, currentIndex.get(), 9));
-        taData.setLongSMA(MovingAverage.calcSMA(taDataList, currentIndex.get(), 50));
-        taData.setEma12(MovingAverage.calcEMA(taDataList, currentIndex.get(), 12));
-        taData.setEma26(MovingAverage.calcEMA(taDataList, currentIndex.get(), 26));
-        taData.setRSI14(RSI.calcRSI(taDataList, currentIndex.get(), 14));
-        taData.setMACD(macd.calcMACD(taDataList, currentIndex.get()));
+
+        taData.setFastSma(indicatorService.getMa().calcSMA(taDataList, currentIndex.get(), 4));
+        taData.setShortSMA(indicatorService.getMa().calcSMA(taDataList, currentIndex.get(), 9));
+        taData.setLongSMA(indicatorService.getMa().calcSMA(taDataList, currentIndex.get(), 50));
+        taData.setRSI14(indicatorService.getRsi().calc(taDataList, currentIndex.get(), 14));
+        taData.setMACD(indicatorService.getMacd().calc12_26(taDataList, currentIndex.get()));
+
         taData.setTrend(trendService.getCurrentTrend(taDataList));
         taData.setSmaCrossed(strategies.smaTrendCross(taDataList));
         taDataList.set(currentIndex.get(), taData);
