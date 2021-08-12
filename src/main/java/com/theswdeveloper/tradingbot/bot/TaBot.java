@@ -24,13 +24,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class TaBot {
 
     private static final Logger logger = LoggerFactory.getLogger(TaBot.class);
-    TaBotPlan plan;
+    private TaBotPlan plan;
     private List<TaData> taDataList = new LinkedList<>();
     private AtomicInteger currentIndex = new AtomicInteger(0);
-    Trade trade = null;
-    Strategies strategies = new Strategies();
-    TrendService trendService = new TrendService();
-    IndicatorService indicatorService = new IndicatorService();
+    private Trade trade = null;
+    private Strategies strategies = new Strategies();
+    private TrendService trendService = new TrendService();
+    private IndicatorService indicatorService = new IndicatorService();
+    private double totalProfit;
 
     public TaBot(TaBotPlan taBotPlan) {
         this.plan = taBotPlan;
@@ -45,6 +46,27 @@ public class TaBot {
         taData.setTime(System.currentTimeMillis());
         taDataList.add(taData);
 
+        if (plan.getMode() != TaBotPlan.Mode.COLLECTOR) {
+            taDataList.set(currentIndex.get(), calculateIndicators(taData));
+            Signal smaCrossSignal = strategies.runStrategy(StrategyType.SHORT_LONG_SMA_CROSS, taDataList);
+            handleTrade(smaCrossSignal);
+        }
+
+        logger.info(taData.toString());
+
+        OutputService.storeDataToCsv(
+                taDataList,
+                currentIndex.get(),
+                trade,
+                taDataList.get(currentIndex.get()).getTrend(),
+                totalProfit
+                );
+
+        currentIndex.getAndIncrement(); //keep this always at the end
+        Thread.sleep(plan.getInterval());
+    }
+
+    private TaData calculateIndicators(TaData taData) {
         taData.setFastSma(indicatorService.getMa().calcSMA(taDataList, currentIndex.get(), 4));
         taData.setShortSMA(indicatorService.getMa().calcSMA(taDataList, currentIndex.get(), 9));
         taData.setLongSMA(indicatorService.getMa().calcSMA(taDataList, currentIndex.get(), 50));
@@ -53,14 +75,13 @@ public class TaBot {
 
         taData.setTrend(trendService.getCurrentTrend(taDataList));
         taData.setSmaCrossed(strategies.smaTrendCross(taDataList));
-        taDataList.set(currentIndex.get(), taData);
+        return taData;
+    }
 
-        logger.info(taData.toString());
-
-        Signal smaCrossSignal = strategies.runStrategy(StrategyType.SHORT_LONG_SMA_CROSS, taDataList);
+    private void handleTrade(Signal signal) {
         if (trade == null || (trade != null && !trade.isTradeOpen())) {
             //trade is closed. let's see if can be opened.
-            if (smaCrossSignal == Signal.BUY) {
+            if (signal == Signal.BUY) {
                 double currentPrice = taDataList.get(currentIndex.get()).getPrice();
                 trade = new Trade(
                         TradeType.LONG,
@@ -70,7 +91,7 @@ public class TaBot {
                 trade.open(currentPrice);
             }
 
-            if (smaCrossSignal == Signal.SELL) {
+            if (signal == Signal.SELL) {
                 double currentPrice = taDataList.get(currentIndex.get()).getPrice();
                 trade = new Trade(
                         TradeType.SHORT,
@@ -85,17 +106,12 @@ public class TaBot {
         if (trade != null && trade.isTradeOpen()) {
             //trade is open. check if can be closed.
             trade.closeTradeIfNeeded(taDataList.get(currentIndex.get()).getPrice());
+            if (!trade.isTradeOpen()) {
+                totalProfit += trade.getProfit();
+                logger.info("total profit: {}", totalProfit);
+            }
+
         }
-
-        OutputService.storeDataToCsv(
-                taDataList,
-                currentIndex.get(),
-                trade != null ? trade.getTradeType().toString() : TradeType.NOT_IN_TRADE.toString(),
-                taDataList.get(currentIndex.get()).getTrend());
-
-        currentIndex.getAndIncrement(); //keep this always at the end
-        Thread.sleep(plan.getInterval());
     }
-
 
 }

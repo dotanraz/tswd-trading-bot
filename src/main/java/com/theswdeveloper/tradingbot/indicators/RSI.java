@@ -31,7 +31,7 @@ public class RSI extends Indicator{
         for (int i = index; i >= range + 1; i--) {
             diff = taDataList.get(i).getPrice() - taDataList.get(i-1).getPrice();
             if (diff > 0) {
-                sumUp = sumUp + diff;
+                sumUp += diff;
             } else {
                 sumDown = sumDown + Math.abs(diff);
             }

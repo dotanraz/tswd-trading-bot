@@ -1,5 +1,6 @@
 package com.theswdeveloper.tradingbot.bot;
 
+import com.theswdeveloper.tradingbot.Utils.NumberUtils;
 import com.theswdeveloper.tradingbot.binance.BinanceApi;
 import com.theswdeveloper.tradingbot.binance.ITradingPlatformApi;
 import org.slf4j.Logger;
@@ -34,6 +35,7 @@ public class Trade {
 
     public void close() {
         this.isTradeOpen = false;
+        this.tradeType = TradeType.NOT_IN_TRADE;
         calcProfit();
         //todo need to close trade
         logger.info("trade closed! type: {}, buy: {}, sell: {}, profit: {}", tradeType, enterTradePrice, currentPrice, profit);
@@ -66,7 +68,7 @@ public class Trade {
     }
 
     private void calcProfit() {
-        this.profit = this.currentPrice - this.enterTradePrice;
+        this.profit = NumberUtils.round2DecimalDigits(this.currentPrice - this.enterTradePrice);
     }
 
     public void updateCurrentPrice(double currentPrice) {
@@ -119,5 +121,29 @@ public class Trade {
 
     public void setStopLoss(double stopLoss) {
         this.stopLoss = stopLoss;
+    }
+
+    public long getBinanceOrderId() {
+        return binanceOrderId;
+    }
+
+    public void setBinanceOrderId(long binanceOrderId) {
+        this.binanceOrderId = binanceOrderId;
+    }
+
+    public BinanceApi getBinanceApi() {
+        return binanceApi;
+    }
+
+    public void setBinanceApi(BinanceApi binanceApi) {
+        this.binanceApi = binanceApi;
+    }
+
+    public double getProfit() {
+        return profit;
+    }
+
+    public void setProfit(double profit) {
+        this.profit = profit;
     }
 }

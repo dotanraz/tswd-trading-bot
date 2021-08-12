@@ -41,7 +41,7 @@ public abstract class Indicator {
         //running in reveres. going over from the highest index to the lowest index in the range
         //when the range = 0, the SMA will be equal to the index's price.
         for (int i = index; i >= range; i--) {
-            sum = sum + taDataList.get(i).getPrice();
+            sum += taDataList.get(i).getPrice();
             total++;
         }
         double sma = NumberUtils.round2DecimalDigits(sum/total);

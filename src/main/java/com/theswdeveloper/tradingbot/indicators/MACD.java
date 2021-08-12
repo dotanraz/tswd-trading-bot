@@ -10,7 +10,6 @@ public class MACD extends Indicator {
         return NumberUtils.round2DecimalDigits(calcEMA(taDataList, index, shortPeriod) - calcEMA(taDataList, index, longPeriod));
     }
 
-
     @Deprecated
     @Override
     public double calc(List<TaData> taDataList, int index, int period) {
@@ -19,6 +18,10 @@ public class MACD extends Indicator {
 
     public double calc12_26(List<TaData> taDataList, int index) {
         return calc(taDataList, index, 12, 26);
+    }
+
+    public double calcSignalLine(List<TaData> taDataList, int index, int period) {
+        return NumberUtils.round2DecimalDigits(calcEMA(taDataList, index, period));
     }
 
 }
