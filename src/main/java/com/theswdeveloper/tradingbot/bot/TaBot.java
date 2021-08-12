@@ -49,7 +49,9 @@ public class TaBot {
         if (plan.getMode() != TaBotPlan.Mode.COLLECTOR) {
             taDataList.set(currentIndex.get(), calculateIndicators(taData));
             Signal smaCrossSignal = strategies.runStrategy(StrategyType.SHORT_LONG_SMA_CROSS, taDataList);
+            Signal rsi = strategies.runStrategy(StrategyType.RSI, taDataList);
             handleTrade(smaCrossSignal);
+            handleTrade(rsi);
         }
 
         logger.info(taData.toString());

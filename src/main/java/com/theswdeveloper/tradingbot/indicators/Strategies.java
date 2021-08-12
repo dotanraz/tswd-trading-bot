@@ -12,6 +12,44 @@ public class Strategies {
 
     private static final Logger logger = LoggerFactory.getLogger(Strategies.class);
 
+    public Signal runStrategy(StrategyType strategyType, List<TaData> taDataList) {
+        switch (strategyType) {
+            case SHORT_LONG_SMA_CROSS:
+                return runShortLongCrossSmaStrategy(taDataList);
+            case RSI:
+                return rsiStrategy(taDataList);
+            default: return null;
+        }
+    }
+
+    /**
+     * Trading strategy:
+     * if the short term SMA is crossing up against the long term SMA - buy signal.
+     * if the short term SMA is crossing down against the long test SMA - sell signal.
+     * @return
+     */
+    private Signal runShortLongCrossSmaStrategy(List<TaData> taDataList) {
+        int size = taDataList.size();
+        if (taDataList.get(size-1).getTrend() == Trend.UP) {
+            logger.info("market trend up");
+            if (smaTrendCross(taDataList) == Trend.UP) {
+                logger.info("signal buy {}", StrategyType.SHORT_LONG_SMA_CROSS);
+                return Signal.BUY;
+            }
+        }
+
+        if (taDataList.get(size-1).getTrend() == Trend.DOWN) {
+            logger.info("market trend down");
+            if (smaTrendCross(taDataList) == Trend.DOWN) {
+                logger.info("signal sell {}", StrategyType.SHORT_LONG_SMA_CROSS);
+                return Signal.SELL;
+            }
+        }
+
+        return Signal.NO_SIGNAL;
+    }
+
+
     public Trend smaTrendCross(List<TaData> taDataList) {
         Trend crossTrend = Trend.NATURAL;
         int N = 2;
@@ -38,40 +76,21 @@ public class Strategies {
         return crossTrend;
     }
 
-    /**
-     * Trading strategy:
-     * if the short term SMA is crossing up against the long term SMA - buy signal.
-     * if the short term SMA is crossing down against the long test SMA - sell signal.
-     * @return
-     */
-    private Signal runShortLongCrossSmaStrategy(List<TaData> taDataList) {
+    public Signal rsiStrategy(List<TaData> taDataList) {
         int size = taDataList.size();
-        if (taDataList.get(size-1).getTrend() == Trend.UP) {
-            logger.info("market trend up");
-            if (smaTrendCross(taDataList) == Trend.UP) {
-                logger.info("signal up");
-                return Signal.BUY;
-            }
+        double rsi = taDataList.get(size-1).getRSI14();
+
+        if (taDataList.get(size-1).getTrend() == Trend.UP && rsi < 25) {
+            logger.info("signal buy {}", StrategyType.RSI);
+            return Signal.BUY;
         }
 
-        if (taDataList.get(size-1).getTrend() == Trend.DOWN) {
-            logger.info("market trend down");
-            if (smaTrendCross(taDataList) == Trend.DOWN) {
-                logger.info("signal down");
-                return Signal.SELL;
-            }
+        if (taDataList.get(size-1).getTrend() == Trend.DOWN && rsi > 75) {
+            logger.info("signal sell {}", StrategyType.RSI);
+            return Signal.SELL;
         }
-
 
         return Signal.NO_SIGNAL;
-    }
-
-    public Signal runStrategy(StrategyType strategyType, List<TaData> taDataList) {
-        switch (strategyType) {
-            case SHORT_LONG_SMA_CROSS:
-                return runShortLongCrossSmaStrategy(taDataList);
-            default: return null;
-        }
     }
 
 }
