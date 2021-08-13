@@ -21,7 +21,8 @@ public class MACD extends Indicator {
     }
 
     public double calcSignalLine(List<TaData> taDataList, int index, int period) {
-        return NumberUtils.round2DecimalDigits(calcEMA(taDataList, index, period));
+        return taDataList.get(index).getShortSMA();
+//        return NumberUtils.round2DecimalDigits(calcEMA(taDataList, index, period));
     }
 
 }

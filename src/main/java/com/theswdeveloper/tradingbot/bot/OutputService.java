@@ -11,10 +11,10 @@ import java.util.List;
 public class OutputService {
 
     private static final Logger logger = LoggerFactory.getLogger(OutputService.class);
-    private static String[] HEADERS = new String[]{"time", "price", "SMA4", "SMA9", "SMA50", "RSI14", "MACD", "trade", "trend", "sma cross", "profit"};
+    private static String[] HEADERS = new String[]{"Time", "Price", "SMA4", "SMA9", "SMA50", "RSI14", "MACD", "Trend", "Trade", "Strategy", "SMA Cross", "Profit"};
     private static CSV csvFile;
 
-    public static void storeDataToCsv(List<TaData> taData, int index, Trade trade, Trend trend, double totalProfit)  {
+    public static void storeDataToCsv(List<TaData> taData, int index, Trade trade, double totalProfit)  {
         FileUtils.createOutputDirectoryIfNotExist(Constants.OUTPUT_DIRECTORY);
         if (!FileUtils.isFileExist(Constants.CSV_OUTPUT_FILE)) {
             csvFile = new CSV(Constants.CSV_OUTPUT_FILE, HEADERS);
@@ -34,8 +34,9 @@ public class OutputService {
                     String.valueOf(taData.get(index).getLongSMA()),
                     String.valueOf(taData.get(index).getRSI14()),
                     String.valueOf(taData.get(index).getMACD()),
+                    taData.get(index).getTrend().toString(),
                     trade != null ? trade.getTradeType().toString() : TradeType.NOT_IN_TRADE.toString(),
-                    trend.toString(),
+                    trade != null ? trade.getStrategyType().toString() : "",
                     String.valueOf(taData.get(index).getSmaCrossed()),
                     String.valueOf(totalProfit)
             );

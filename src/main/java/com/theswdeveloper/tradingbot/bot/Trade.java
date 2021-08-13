@@ -3,6 +3,7 @@ package com.theswdeveloper.tradingbot.bot;
 import com.theswdeveloper.tradingbot.Utils.NumberUtils;
 import com.theswdeveloper.tradingbot.binance.BinanceApi;
 import com.theswdeveloper.tradingbot.binance.ITradingPlatformApi;
+import com.theswdeveloper.tradingbot.indicators.StrategyType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,14 +17,14 @@ public class Trade {
     private double stopLoss;
     private double currentPrice;
     private long binanceOrderId;
-    private BinanceApi binanceApi;
     private double profit;
+    StrategyType strategyType;
 
-    public Trade(TradeType tradeType, double stopLimit, double stopLoss, ITradingPlatformApi tradingPlatformApi) {
+    public Trade(TradeType tradeType, double stopLimit, double stopLoss, StrategyType strategyType) {
         this.tradeType = tradeType;
         this.stopLimit = stopLimit;
         this.stopLoss = stopLoss;
-        this.binanceApi = binanceApi;
+        this.strategyType = strategyType;
     }
 
     public void open(double currentPrice) {
@@ -35,8 +36,9 @@ public class Trade {
 
     public void close() {
         this.isTradeOpen = false;
-        this.tradeType = TradeType.NOT_IN_TRADE;
         calcProfit();
+        this.tradeType = TradeType.NOT_IN_TRADE;
+        this.strategyType = StrategyType.NA;
         //todo need to close trade
         logger.info("trade closed! type: {}, buy: {}, sell: {}, profit: {}", tradeType, enterTradePrice, currentPrice, profit);
     }
@@ -68,7 +70,13 @@ public class Trade {
     }
 
     private void calcProfit() {
-        this.profit = NumberUtils.round2DecimalDigits(this.currentPrice - this.enterTradePrice);
+        if (tradeType == TradeType.LONG) {
+            this.profit = NumberUtils.round2DecimalDigits(this.currentPrice - this.enterTradePrice);
+        }
+        if (tradeType == TradeType.SHORT) {
+            this.profit = NumberUtils.round2DecimalDigits(this.enterTradePrice - this.currentPrice);
+        }
+
     }
 
     public void updateCurrentPrice(double currentPrice) {
@@ -131,19 +139,19 @@ public class Trade {
         this.binanceOrderId = binanceOrderId;
     }
 
-    public BinanceApi getBinanceApi() {
-        return binanceApi;
-    }
-
-    public void setBinanceApi(BinanceApi binanceApi) {
-        this.binanceApi = binanceApi;
-    }
-
     public double getProfit() {
         return profit;
     }
 
     public void setProfit(double profit) {
         this.profit = profit;
+    }
+
+    public StrategyType getStrategyType() {
+        return strategyType;
+    }
+
+    public void setStrategyType(StrategyType strategyType) {
+        this.strategyType = strategyType;
     }
 }

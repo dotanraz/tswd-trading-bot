@@ -4,6 +4,7 @@ public enum StrategyType {
 
     SHORT_LONG_SMA_CROSS,
     MACD,
-    RSI
+    RSI,
+    NA
 
 }

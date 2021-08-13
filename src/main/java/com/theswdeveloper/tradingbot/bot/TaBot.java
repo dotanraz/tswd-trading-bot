@@ -50,8 +50,8 @@ public class TaBot {
             taDataList.set(currentIndex.get(), calculateIndicators(taData));
             Signal smaCrossSignal = strategies.runStrategy(StrategyType.SHORT_LONG_SMA_CROSS, taDataList);
             Signal rsi = strategies.runStrategy(StrategyType.RSI, taDataList);
-            handleTrade(smaCrossSignal);
-            handleTrade(rsi);
+            handleTrade(smaCrossSignal, StrategyType.SHORT_LONG_SMA_CROSS);
+            handleTrade(rsi, StrategyType.RSI);
         }
 
         logger.info(taData.toString());
@@ -60,7 +60,6 @@ public class TaBot {
                 taDataList,
                 currentIndex.get(),
                 trade,
-                taDataList.get(currentIndex.get()).getTrend(),
                 totalProfit
                 );
 
@@ -80,7 +79,7 @@ public class TaBot {
         return taData;
     }
 
-    private void handleTrade(Signal signal) {
+    private void handleTrade(Signal signal, StrategyType strategyType) {
         if (trade == null || (trade != null && !trade.isTradeOpen())) {
             //trade is closed. let's see if can be opened.
             if (signal == Signal.BUY) {
@@ -89,7 +88,7 @@ public class TaBot {
                         TradeType.LONG,
                         TradeUtils.calcStopLimit(currentPrice, TradeType.LONG, plan.getStopLimitPct()),
                         TradeUtils.calcStopLoss(currentPrice, TradeType.LONG, plan.getStopLossPct()),
-                        plan.getTradingPlatformApi());
+                        strategyType);
                 trade.open(currentPrice);
             }
 
@@ -99,7 +98,7 @@ public class TaBot {
                         TradeType.SHORT,
                         TradeUtils.calcStopLimit(currentPrice, TradeType.SHORT, plan.getStopLimitPct()),
                         TradeUtils.calcStopLoss(currentPrice, TradeType.SHORT, plan.getStopLossPct()),
-                        plan.getTradingPlatformApi());
+                        strategyType);
                 trade.open(currentPrice);
             }
 

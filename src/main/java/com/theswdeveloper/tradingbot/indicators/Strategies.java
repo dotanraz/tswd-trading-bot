@@ -5,7 +5,6 @@ import com.theswdeveloper.tradingbot.bot.TaData;
 import com.theswdeveloper.tradingbot.bot.Trend;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.util.List;
 
 public class Strategies {
@@ -80,12 +79,12 @@ public class Strategies {
         int size = taDataList.size();
         double rsi = taDataList.get(size-1).getRSI14();
 
-        if (taDataList.get(size-1).getTrend() == Trend.UP && rsi < 25) {
+        if (taDataList.get(size-1).getTrend() == Trend.UP && rsi < 20) {
             logger.info("signal buy {}", StrategyType.RSI);
             return Signal.BUY;
         }
 
-        if (taDataList.get(size-1).getTrend() == Trend.DOWN && rsi > 75) {
+        if (taDataList.get(size-1).getTrend() == Trend.DOWN && rsi > 80) {
             logger.info("signal sell {}", StrategyType.RSI);
             return Signal.SELL;
         }
@@ -93,4 +92,12 @@ public class Strategies {
         return Signal.NO_SIGNAL;
     }
 
+    public Signal macdStrategy(List<TaData> taDataList) {
+        int size = taDataList.size();
+        double macd = taDataList.get(size-1).getMACD();
+        double signalLine = taDataList.get(size-1).getShortSMA();
+
+        //todo implementation is not finished
+        return null;
+    }
 }
