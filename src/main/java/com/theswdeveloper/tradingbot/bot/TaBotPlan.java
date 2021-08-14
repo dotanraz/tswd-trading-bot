@@ -75,9 +75,11 @@ public class TaBotPlan {
                 ", interval=" + interval +
                 ", stopLimitPct=" + stopLimitPct +
                 ", stopLossPct=" + stopLossPct +
-                ", tradingPlatformApi=" + tradingPlatformApi.getClass().getSimpleName() +
+                ", tradingPlatformApi=" + tradingPlatformApi +
+                ", mode=" + mode +
                 '}';
     }
+
 
     public enum Mode {
         SIMULATION,
