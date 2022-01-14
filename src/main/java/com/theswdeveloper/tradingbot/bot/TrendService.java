@@ -7,12 +7,19 @@ import java.util.List;
  * N - the range size to determine the trend. the trend is calculated on a fast SMA (3/4/5 periods).
  */
 public class TrendService {
-    int N = 4;
 
     public TrendService() {
     }
 
-    public Trend getCurrentTrend(List<TaData> taDataList) {
+    public Trend getSortTrend(List<TaData> taDataList) {
+        return calcTrend(taDataList, 4);
+    }
+
+    public Trend getLongTrend(List<TaData> taDataList) {
+        return calcTrend(taDataList, 50);
+    }
+
+    private Trend calcTrend(List<TaData> taDataList, int N) {
         int size = taDataList.size();
         if (size <= N) {
             //not enough data to determine trend
@@ -37,11 +44,4 @@ public class TrendService {
         return Trend.NATURAL;
     }
 
-    public int getN() {
-        return N;
-    }
-
-    public void setN(int n) {
-        N = n;
-    }
 }

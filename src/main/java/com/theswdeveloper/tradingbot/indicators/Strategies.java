@@ -29,7 +29,7 @@ public class Strategies {
      */
     private Signal runShortLongCrossSmaStrategy(List<TaData> taDataList) {
         int size = taDataList.size();
-        if (taDataList.get(size-1).getTrend() == Trend.UP) {
+        if (taDataList.get(size-1).getShortTrend() == Trend.UP) {
             logger.info("market trend up");
             if (smaTrendCross(taDataList) == Trend.UP) {
                 logger.info("signal buy {}", StrategyType.SHORT_LONG_SMA_CROSS);
@@ -37,7 +37,7 @@ public class Strategies {
             }
         }
 
-        if (taDataList.get(size-1).getTrend() == Trend.DOWN) {
+        if (taDataList.get(size-1).getShortTrend() == Trend.DOWN) {
             logger.info("market trend down");
             if (smaTrendCross(taDataList) == Trend.DOWN) {
                 logger.info("signal sell {}", StrategyType.SHORT_LONG_SMA_CROSS);
@@ -79,12 +79,12 @@ public class Strategies {
         int size = taDataList.size();
         double rsi = taDataList.get(size-1).getRSI14();
 
-        if (taDataList.get(size-1).getTrend() == Trend.UP && rsi < 20) {
+        if (taDataList.get(size-1).getShortTrend() == Trend.UP && rsi < 20) {
             logger.info("signal buy {}", StrategyType.RSI);
             return Signal.BUY;
         }
 
-        if (taDataList.get(size-1).getTrend() == Trend.DOWN && rsi > 80) {
+        if (taDataList.get(size-1).getShortTrend() == Trend.DOWN && rsi > 80) {
             logger.info("signal sell {}", StrategyType.RSI);
             return Signal.SELL;
         }

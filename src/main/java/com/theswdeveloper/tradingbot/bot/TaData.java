@@ -9,7 +9,9 @@ public class TaData {
     private double longSMA;
     private double RSI14;
     private double MACD;
-    private Trend trend = Trend.NATURAL;
+    private double MACD_DIGNAL;
+    private Trend shortTrend = Trend.NATURAL;
+    private Trend longTrend = Trend.NATURAL;
     private Trend smaCrossed = Trend.NATURAL;
 
     public TaData() {
@@ -52,12 +54,12 @@ public class TaData {
         this.longSMA = longSMA;
     }
 
-    public Trend getTrend() {
-        return trend;
+    public Trend getShortTrend() {
+        return shortTrend;
     }
 
-    public void setTrend(Trend trend) {
-        this.trend = trend;
+    public void setShortTrend(Trend shortTrend) {
+        this.shortTrend = shortTrend;
     }
 
     public double getFastSma() {
@@ -92,16 +94,35 @@ public class TaData {
         this.MACD = MACD;
     }
 
+    public double getMACD_DIGNAL() {
+        return MACD_DIGNAL;
+    }
+
+    public void setMACD_DIGNAL(double MACD_DIGNAL) {
+        this.MACD_DIGNAL = MACD_DIGNAL;
+    }
+
+    public Trend getLongTrend() {
+        return longTrend;
+    }
+
+    public void setLongTrend(Trend longTrend) {
+        this.longTrend = longTrend;
+    }
+
     @Override
     public String toString() {
         return "TaData{" +
+                "time=" + time +
                 ", price=" + price +
                 ", fastSma=" + fastSma +
                 ", shortSMA=" + shortSMA +
                 ", longSMA=" + longSMA +
                 ", RSI14=" + RSI14 +
                 ", MACD=" + MACD +
-                ", trend=" + trend +
+                ", MACD_DIGNAL=" + MACD_DIGNAL +
+                ", shortTrend=" + shortTrend +
+                ", longTrend=" + longTrend +
                 ", smaCrossed=" + smaCrossed +
                 '}';
     }

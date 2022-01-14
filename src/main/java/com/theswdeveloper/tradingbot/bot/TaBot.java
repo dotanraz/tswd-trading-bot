@@ -73,8 +73,9 @@ public class TaBot {
         taData.setLongSMA(indicatorService.getMa().calcSMA(taDataList, currentIndex.get(), 50));
         taData.setRSI14(indicatorService.getRsi().calc(taDataList, currentIndex.get(), 14));
         taData.setMACD(indicatorService.getMacd().calc12_26(taDataList, currentIndex.get()));
-
-        taData.setTrend(trendService.getCurrentTrend(taDataList));
+        taData.setMACD_DIGNAL(indicatorService.getMacd().calcSignalLine(taDataList, currentIndex.get(), 9));
+        taData.setShortTrend(trendService.getSortTrend(taDataList));
+        taData.setLongTrend(trendService.getLongTrend(taDataList));
         taData.setSmaCrossed(strategies.smaTrendCross(taDataList));
         return taData;
     }

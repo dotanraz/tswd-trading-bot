@@ -11,7 +11,7 @@ import java.util.List;
 public class OutputService {
 
     private static final Logger logger = LoggerFactory.getLogger(OutputService.class);
-    private static String[] HEADERS = new String[]{"Time", "Price", "SMA4", "SMA9", "SMA50", "RSI14", "MACD", "Trend", "Trade", "Strategy", "SMA Cross", "Profit"};
+    private static String[] HEADERS = new String[]{"Time", "Price", "SMA4", "SMA9", "SMA50", "RSI14", "MACD", "Short Trend", "Long Trend", "Trade", "Strategy", "SMA Cross", "Profit"};
     private static CSV csvFile;
 
     public static void storeDataToCsv(List<TaData> taData, int index, Trade trade, double totalProfit)  {
@@ -34,7 +34,8 @@ public class OutputService {
                     String.valueOf(taData.get(index).getLongSMA()),
                     String.valueOf(taData.get(index).getRSI14()),
                     String.valueOf(taData.get(index).getMACD()),
-                    taData.get(index).getTrend().toString(),
+                    String.valueOf(taData.get(index).getShortTrend().getNumber()),
+                    String.valueOf(taData.get(index).getLongTrend().getNumber()),
                     trade != null ? trade.getTradeType().toString() : TradeType.NOT_IN_TRADE.toString(),
                     trade != null ? trade.getStrategyType().toString() : "",
                     String.valueOf(taData.get(index).getSmaCrossed()),

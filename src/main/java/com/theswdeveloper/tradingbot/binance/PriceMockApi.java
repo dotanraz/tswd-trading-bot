@@ -15,8 +15,7 @@ import java.util.List;
 public class PriceMockApi implements ITradingPlatformApi{
 
     private static final Logger logger = LoggerFactory.getLogger(PriceMockApi.class);
-//    String testData = "src/main/resources/static/testData_eth_usdt_8hours.csv";
-    String testData = "src/main/resources/static/testData_btc_usdt_21hours.csv";
+    String testData = "src/main/resources/static/testData.csv";
     CSV csv = null;
     Deque<String> priceDeque = new ArrayDeque<>();
 
@@ -27,8 +26,8 @@ public class PriceMockApi implements ITradingPlatformApi{
     private void loadTestData() {
         csv = new CSV(this.testData);
         try {
-            Iterable<CSVRecord> records = csv.readFromCsv(new String[]{"Time", "Price"});
-            records.forEach(record -> priceDeque.add(record.get("Price")));
+            Iterable<CSVRecord> records = csv.readFromCsv(new String[]{"time", "price"});
+            records.forEach(record -> priceDeque.add(record.get("price")));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -40,7 +39,7 @@ public class PriceMockApi implements ITradingPlatformApi{
         if (price != null ) {
             return price;
         } else {
-            logger.error("price mock data = null");
+            logger.warn("price mock data = null");
             System.exit(0);
             return null;
         }
