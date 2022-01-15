@@ -82,7 +82,7 @@ public class TaBot {
 
     private void handleTrade(Signal signal, StrategyType strategyType) {
         if (trade == null || (trade != null && !trade.isTradeOpen())) {
-            //trade is closed. let's see if can be opened.
+            //trade is closed. let's check if it can be opened.
             if (signal == Signal.BUY) {
                 double currentPrice = taDataList.get(currentIndex.get()).getPrice();
                 trade = new Trade(
@@ -106,7 +106,7 @@ public class TaBot {
         }
 
         if (trade != null && trade.isTradeOpen()) {
-            //trade is open. check if can be closed.
+            //trade is open. let's check if it can be closed.
             trade.closeTradeIfNeeded(taDataList.get(currentIndex.get()).getPrice());
             if (!trade.isTradeOpen()) {
                 totalProfit += trade.getProfit();

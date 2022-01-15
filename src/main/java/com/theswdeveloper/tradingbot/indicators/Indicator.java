@@ -50,8 +50,8 @@ public abstract class Indicator {
     }
 
     /**
-     * EMA - Exponential Moving Average
-     * Average calculation considered the whole period, but assign more weight on the current price
+     * EMA - Exponential Moving Average.
+     * Average calculation considers the whole period, but assign more weight on the current price
      *
      * EMA = currentPrice*k + previousEmaPrice*(1-k).
      * k=2/(N+1)
