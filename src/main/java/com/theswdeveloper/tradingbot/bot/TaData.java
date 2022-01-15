@@ -1,15 +1,18 @@
 package com.theswdeveloper.tradingbot.bot;
 
+/**
+ * Holds the technical analysis points for a given price
+ */
 public class TaData {
 
     private long time;
     private double price;
-    private double fastSma;
-    private double shortSMA;
-    private double longSMA;
+    private double SMA4;
+    private double SMA9;
+    private double SMA50;
+    private double SMA50SMA9DIFF;
     private double RSI14;
     private double MACD;
-    private double MACD_DIGNAL;
     private Trend shortTrend = Trend.NATURAL;
     private Trend longTrend = Trend.NATURAL;
     private Trend smaCrossed = Trend.NATURAL;
@@ -38,20 +41,20 @@ public class TaData {
         this.price = price;
     }
 
-    public double getShortSMA() {
-        return shortSMA;
+    public double getSMA9() {
+        return SMA9;
     }
 
-    public void setShortSMA(double shortSMA) {
-        this.shortSMA = shortSMA;
+    public void setSMA9(double SMA9) {
+        this.SMA9 = SMA9;
     }
 
-    public double getLongSMA() {
-        return longSMA;
+    public double getSMA50() {
+        return SMA50;
     }
 
-    public void setLongSMA(double longSMA) {
-        this.longSMA = longSMA;
+    public void setSMA50(double SMA50) {
+        this.SMA50 = SMA50;
     }
 
     public Trend getShortTrend() {
@@ -62,12 +65,20 @@ public class TaData {
         this.shortTrend = shortTrend;
     }
 
-    public double getFastSma() {
-        return fastSma;
+    public Trend getLongTrend() {
+        return longTrend;
     }
 
-    public void setFastSma(double fastSma) {
-        this.fastSma = fastSma;
+    public void setLongTrend(Trend longTrend) {
+        this.longTrend = longTrend;
+    }
+
+    public double getSMA4() {
+        return SMA4;
+    }
+
+    public void setSMA4(double SMA4) {
+        this.SMA4 = SMA4;
     }
 
     public Trend getSmaCrossed() {
@@ -94,20 +105,12 @@ public class TaData {
         this.MACD = MACD;
     }
 
-    public double getMACD_DIGNAL() {
-        return MACD_DIGNAL;
+    public double getSMA50SMA9DIFF() {
+        return SMA50SMA9DIFF;
     }
 
-    public void setMACD_DIGNAL(double MACD_DIGNAL) {
-        this.MACD_DIGNAL = MACD_DIGNAL;
-    }
-
-    public Trend getLongTrend() {
-        return longTrend;
-    }
-
-    public void setLongTrend(Trend longTrend) {
-        this.longTrend = longTrend;
+    public void setSMA50SMA9DIFF(double SMA50SMA9DIFF) {
+        this.SMA50SMA9DIFF = SMA50SMA9DIFF;
     }
 
     @Override
@@ -115,12 +118,12 @@ public class TaData {
         return "TaData{" +
                 "time=" + time +
                 ", price=" + price +
-                ", fastSma=" + fastSma +
-                ", shortSMA=" + shortSMA +
-                ", longSMA=" + longSMA +
+                ", SMA4=" + SMA4 +
+                ", SMA9=" + SMA9 +
+                ", SMA50=" + SMA50 +
+                ", SMA50SMA9DIFF=" + SMA50SMA9DIFF +
                 ", RSI14=" + RSI14 +
                 ", MACD=" + MACD +
-                ", MACD_DIGNAL=" + MACD_DIGNAL +
                 ", shortTrend=" + shortTrend +
                 ", longTrend=" + longTrend +
                 ", smaCrossed=" + smaCrossed +

@@ -56,10 +56,10 @@ public class Strategies {
         if (size <= N) {
             return Trend.NATURAL;
         }
-        double currentShortSma = taDataList.get(size - 1).getShortSMA();
-        double currentLongSma = taDataList.get(size - 1).getLongSMA();
-        double previousShortSma = taDataList.get(size - N).getShortSMA();
-        double previousLongSma = taDataList.get(size - N).getLongSMA();
+        double currentShortSma = taDataList.get(size - 1).getSMA9();
+        double currentLongSma = taDataList.get(size - 1).getSMA50();
+        double previousShortSma = taDataList.get(size - N).getSMA9();
+        double previousLongSma = taDataList.get(size - N).getSMA50();
 
 
         if (previousShortSma/previousLongSma < 1 && currentShortSma/currentLongSma > 1) {
@@ -95,7 +95,7 @@ public class Strategies {
     public Signal macdStrategy(List<TaData> taDataList) {
         int size = taDataList.size();
         double macd = taDataList.get(size-1).getMACD();
-        double signalLine = taDataList.get(size-1).getShortSMA();
+        double signalLine = taDataList.get(size-1).getSMA9();
 
         //todo implementation is not finished
         return null;

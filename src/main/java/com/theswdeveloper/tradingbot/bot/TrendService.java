@@ -4,7 +4,8 @@ import java.util.List;
 
 /**
  * The purpose of this class is to return the current direction of the market.
- * N - the range size to determine the trend. the trend is calculated on a fast SMA (3/4/5 periods).
+ * N - the range size to determine the trend. the trend can be calculated on any SMA set
+ * e.g: SMA9, SMA50, SMA9-SMA50
  */
 public class TrendService {
 
@@ -16,7 +17,7 @@ public class TrendService {
     }
 
     public Trend getLongTrend(List<TaData> taDataList) {
-        return calcTrend(taDataList, 50);
+        return calcTrend(taDataList, 20);
     }
 
     private Trend calcTrend(List<TaData> taDataList, int N) {
@@ -26,22 +27,23 @@ public class TrendService {
             return Trend.NATURAL;
         }
 
-        double currentPriceFastSma = taDataList.get(size-1).getFastSma();
-        double sumPricesFastSma = 0;
+        double current = taDataList.get(size-1).getSMA50SMA9DIFF();
+        double sumForPeriod = 0;
         for (int i = 0; i < N; i++) {
-            sumPricesFastSma = sumPricesFastSma + taDataList.get(size-1 -i).getFastSma();
+            sumForPeriod = sumForPeriod + taDataList.get(size-1 -i).getSMA50SMA9DIFF();
         }
-        double meanFastSmaPrice = sumPricesFastSma/N;
+        double mean = sumForPeriod/N;
 
-        if (currentPriceFastSma > meanFastSmaPrice) {
+        if (current > mean) {
             return Trend.UP;
         }
 
-        if (currentPriceFastSma < meanFastSmaPrice) {
+        if (current < mean) {
             return Trend.DOWN;
         }
 
         return Trend.NATURAL;
     }
+
 
 }

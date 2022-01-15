@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Moving Average algorithms
  */
-public class MovingAverage extends Indicator{
+public class MovingAverage extends Indicator {
     private static final Logger logger = LoggerFactory.getLogger(MovingAverage.class);
 
     public MovingAverage() {

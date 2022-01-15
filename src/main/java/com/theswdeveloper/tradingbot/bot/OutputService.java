@@ -11,7 +11,7 @@ import java.util.List;
 public class OutputService {
 
     private static final Logger logger = LoggerFactory.getLogger(OutputService.class);
-    private static String[] HEADERS = new String[]{"Time", "Price", "SMA4", "SMA9", "SMA50", "RSI14", "MACD", "Short Trend", "Long Trend", "Trade", "Strategy", "SMA Cross", "Profit"};
+    private static String[] HEADERS = new String[]{"Time", "Price", "SMA4", "SMA9", "SMA50", "SMA9-SMA50", "RSI14", "MACD", "Short Trend", "Long Trend", "Trade", "Strategy", "SMA Cross", "Profit"};
     private static CSV csvFile;
 
     public static void storeDataToCsv(List<TaData> taData, int index, Trade trade, double totalProfit)  {
@@ -29,14 +29,15 @@ public class OutputService {
                     HEADERS,
                     String.valueOf(taData.get(index).getTime()),
                     String.valueOf(taData.get(index).getPrice()),
-                    String.valueOf(taData.get(index).getFastSma()),
-                    String.valueOf(taData.get(index).getShortSMA()),
-                    String.valueOf(taData.get(index).getLongSMA()),
+                    String.valueOf(taData.get(index).getSMA4()),
+                    String.valueOf(taData.get(index).getSMA9()),
+                    String.valueOf(taData.get(index).getSMA50()),
+                    String.valueOf(taData.get(index).getSMA50SMA9DIFF()),
                     String.valueOf(taData.get(index).getRSI14()),
                     String.valueOf(taData.get(index).getMACD()),
                     String.valueOf(taData.get(index).getShortTrend().getNumber()),
                     String.valueOf(taData.get(index).getLongTrend().getNumber()),
-                    trade != null ? trade.getTradeType().toString() : TradeType.NOT_IN_TRADE.toString(),
+                    trade != null ? String.valueOf(trade.getTradeType().getNumber()) : "0",
                     trade != null ? trade.getStrategyType().toString() : "",
                     String.valueOf(taData.get(index).getSmaCrossed()),
                     String.valueOf(totalProfit)
