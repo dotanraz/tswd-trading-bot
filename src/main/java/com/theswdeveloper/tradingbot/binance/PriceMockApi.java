@@ -16,7 +16,7 @@ public class PriceMockApi implements ITradingPlatformApi{
 
     private static final Logger logger = LoggerFactory.getLogger(PriceMockApi.class);
 //    String testData = "src/main/resources/static/testData.csv";
-    String testData = "src/main/resources/static/test_data_btc_1year.csv";
+    String testData = "src/main/resources/static/testData_eth_usdt_8hours.csv";
     CSV csv = null;
     Deque<String> priceDeque = new ArrayDeque<>();
 
