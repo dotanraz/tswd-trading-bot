@@ -10,3 +10,6 @@ Binance website: https://www.binance.com/
 How To run the program:
 Linux: run the following command from the root of the project -  
     export binance_key=your_binance_key;binance_secret=your_binance_secret && ./gradlew bootRun
+    
+    
+   ![image](https://user-images.githubusercontent.com/20465183/183079405-f896b465-3e07-4826-98fe-df40e99ba542.png)
