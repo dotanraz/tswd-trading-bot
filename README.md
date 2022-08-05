@@ -26,3 +26,9 @@ Linux: run the following command from the root of the project -
     
     
    ![image](https://user-images.githubusercontent.com/20465183/183079405-f896b465-3e07-4826-98fe-df40e99ba542.png)
+
+
+By default the bot is running on test data.
+see Main.java - 
+TaBotPlan plan = new TaBotPlan("ETHUSDT", new PriceMockApi(), 10, 0.2, 0.2, TaBotPlan.Mode.TEST_DATA);
+All test data are located at resources/static folder.
