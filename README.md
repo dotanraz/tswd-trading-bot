@@ -34,7 +34,7 @@ All test data are located at resources/static folder.
 
 Output Example
 
-![alt text](https://github.com/dotanraz/tswd-trading-bot/blob/master/output_examples/sma_strategy_chart.png?raw=true)
+![alt text](https://github.com/dotanraz/tswd-trading-bot/blob/master/output_examples/output_charts.png?raw=true)
 
 
 ![alt text](https://github.com/dotanraz/tswd-trading-bot/blob/master/output_examples/data_output.png?raw=true)
