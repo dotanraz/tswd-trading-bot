@@ -24,13 +24,17 @@ How To run the program:
 Linux: run the following command from the root of the project -  
     export binance_key=your_binance_key;binance_secret=your_binance_secret && ./gradlew bootRun
 
-
-![alt text](https://github.com/dotanraz/tswd-trading-bot/blob/master/output_examples/data_output.png?raw=true)
-
-
 By default the bot is running on test data.
 see Main.java -
 
 TaBotPlan plan = new TaBotPlan("ETHUSDT", new PriceMockApi(), 10, 0.2, 0.2, TaBotPlan.Mode.TEST_DATA);
 
 All test data are located at resources/static folder.
+
+
+Output Example
+
+![alt text](https://github.com/dotanraz/tswd-trading-bot/blob/master/output_examples/sma_strategy_chart.png?raw=true)
+
+
+![alt text](https://github.com/dotanraz/tswd-trading-bot/blob/master/output_examples/data_output.png?raw=true)
