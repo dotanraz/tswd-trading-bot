@@ -23,9 +23,9 @@ The bot knows all the time the direction of the market, and execute a trade once
 How To run the program:
 Linux: run the following command from the root of the project -  
     export binance_key=your_binance_key;binance_secret=your_binance_secret && ./gradlew bootRun
-    
-    
-   ![image](https://user-images.githubusercontent.com/20465183/183079405-f896b465-3e07-4826-98fe-df40e99ba542.png)
+
+
+![alt text](https://github.com/dotanraz/tswd-trading-bot/blob/master/output_examples/data_output.png?raw=true)
 
 
 By default the bot is running on test data.
